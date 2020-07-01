@@ -4,7 +4,7 @@ from pathlib import Path
 
 def parse_args() -> Path:
     """
-    Get the text file path argument from the command line.
+    Get the log (JSON) file path argument from the command line.
     """
     pass
 
