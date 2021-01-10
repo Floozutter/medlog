@@ -1,2 +1,2 @@
 # medlog
-A minimal logging tool for medication doses
+A minimalist logging tool for medication dosing!
