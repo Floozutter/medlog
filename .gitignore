@@ -1,5 +1,5 @@
-# Cargo target directory.
+# Cargo target directory
 target/
 
-# rustfmt backups.
+# rustfmt backups
 **/*.rs.bk
