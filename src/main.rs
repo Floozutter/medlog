@@ -22,7 +22,7 @@ fn parse_args() -> Result<(String, u32), std::borrow::Cow<'static, str>> {
             return Err(format!(
                 "can't parse argument <dose_mg>! ({})",
                 error
-            ).into())
+            ).into());
         },
     };
     Ok((logfile, dose_mg))
