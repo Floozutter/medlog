@@ -34,14 +34,19 @@ fn parse_args() -> Result<(std::fs::File, u32), std::borrow::Cow<'static, str>> 
 }
 
 fn main() {
-    let (log_file, dose_mg) = match parse_args() {
+    let (mut log_file, dose_mg) = match parse_args() {
         Ok(args) => args,
         Err(error) => {
-            println!("{}\nerror: {}", USAGE, error);
+            eprintln!("{}\nerror: {}", USAGE, error);
             std::process::exit(1);
         },
     };
-    println!("*notices your args* owo what's this?: {:?} {}", log_file, dose_mg);
-    println!("it's time: {}", chrono::Local::now());
+    let record = format!("{} | {} mg", chrono::Local::now(), dose_mg);
+    println!("appending `{}` to file...", record);
+    use std::io::Write;
+    if let Err(error) = writeln!(log_file, "{}", record) {
+        eprintln!("error: append failed ({})!", error);
+        std::process::exit(1);
+    }
 }
 
