@@ -19,7 +19,7 @@ fn parse_args() -> Result<(File, u32), Cow<'static, str>> {
         Ok(log_file) => log_file,
         Err(error) => {
             return Err(format!(
-                "can't open or create argument <log_file>: `{}` ({}!)",
+                "can't open or create argument <log_file>: `{}` ({})!",
                 log_file, error
             ).into());
         },
