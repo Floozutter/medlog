@@ -3,24 +3,24 @@ usage: medlog <logfile> <dose_mg>
 example: medlog estradiol.log 2
 ";
 
-fn parse_args() -> Result<(String, u32), String> {
+fn parse_args() -> Result<(String, u32), std::borrow::Cow<'static, str>> {
     let mut args = std::env::args();
     args.next();
     let logfile = match args.next() {
         Some(logfile) => logfile,
-        None => return Err("missing argument <logfile>!".to_string()),
+        None => return Err("missing argument <logfile>!".into()),
     };
     let dose_mg = match args.next() {
         Some(dose_mg) => dose_mg,
-        None => return Err("missing argument <dose_mg>!".to_string()),
+        None => return Err("missing argument <dose_mg>!".into()),
     };
     let dose_mg = match dose_mg.parse::<u32>() {
         Ok(dose_mg) => dose_mg,
         Err(error) => {
             return Err(format!(
                 "can't parse argument <dose_mg>! ({})",
-                error.to_string()
-            ))
+                error
+            ).into())
         },
     };
     Ok((logfile, dose_mg))
