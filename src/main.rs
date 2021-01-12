@@ -37,16 +37,20 @@ fn main() {
     let (mut log_file, dose_mg) = match parse_args() {
         Ok(args) => args,
         Err(error) => {
-            eprintln!("{}\nerror: {}", USAGE, error);
+            println!("{}", USAGE);
+            eprintln!("error: {}", error);
             std::process::exit(1);
         },
     };
     use chrono::SubsecRound;
     let record = format!("{} | {} mg", chrono::Local::now().round_subsecs(0), dose_mg);
-    println!("appending `{}` to file...", record);
+    print!("appending `{}` to file...", record);
     use std::io::Write;
     if let Err(error) = writeln!(log_file, "{}", record) {
+        println!("!\n");
         eprintln!("error: append failed ({})!", error);
         std::process::exit(1);
     }
+    println!(" done.");
 }
+
