@@ -5,7 +5,9 @@ example: medlog estradiol.log 2
 
 fn parse_args() -> Result<(String, u32), std::borrow::Cow<'static, str>> {
     let mut args = std::env::args();
-    args.next();
+    if args.next().is_none() {
+        return Err("missing arguments!".into());
+    }
     let logfile = match args.next() {
         Some(logfile) => logfile,
         None => return Err("missing argument <logfile>!".into()),
