@@ -1,16 +1,28 @@
+use std::fs::{File, OpenOptions};
+use std::borrow::Cow;
+
 const USAGE: &str = "\
-usage: medlog <logfile> <dose_mg>
+usage: medlog <file> <dose_mg>
 example: medlog estradiol.log 2
 ";
 
-fn parse_args() -> Result<(String, u32), std::borrow::Cow<'static, str>> {
+fn parse_args() -> Result<(File, u32), Cow<'static, str>> {
     let mut args = std::env::args();
     if args.next().is_none() {
         return Err("missing arguments!".into());
     }
-    let logfile = match args.next() {
+    let file = match args.next() {
         Some(logfile) => logfile,
-        None => return Err("missing argument <logfile>!".into()),
+        None => return Err("missing argument <file>!".into()),
+    };
+    let file = match OpenOptions::new().append(true).create(true).open(file) {
+        Ok(file) => file,
+        Err(error) => {
+            return Err(format!(
+                "can't open or create argument <file>! ({})",
+                error
+            ).into());
+        },
     };
     let dose_mg = match args.next() {
         Some(dose_mg) => dose_mg,
@@ -25,17 +37,17 @@ fn parse_args() -> Result<(String, u32), std::borrow::Cow<'static, str>> {
             ).into());
         },
     };
-    Ok((logfile, dose_mg))
+    Ok((file, dose_mg))
 }
 
 fn main() {
-    let (logfile, dose_mg) = match parse_args() {
+    let (file, dose_mg) = match parse_args() {
         Ok(args) => args,
         Err(error) => {
             println!("{}\nerror: {}", USAGE, error);
             std::process::exit(1);
         },
     };
-    println!("*notices your args* owo what's this?: {} {}", logfile, dose_mg);
+    println!("*notices your args* owo what's this?: {:?} {}", file, dose_mg);
 }
 
