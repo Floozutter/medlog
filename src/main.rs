@@ -15,12 +15,12 @@ fn parse_args() -> Result<(File, u32), Cow<'static, str>> {
         Some(log_file) => log_file,
         None => return Err("missing argument <log_file>!".into()),
     };
-    let log_file = match OpenOptions::new().append(true).create(true).open(log_file) {
+    let log_file = match OpenOptions::new().append(true).create(true).open(&log_file) {
         Ok(log_file) => log_file,
         Err(error) => {
             return Err(format!(
-                "can't open or create argument <log_file>! ({})",
-                error
+                "can't open or create argument <log_file>: `{}` ({}!)",
+                log_file, error
             ).into());
         },
     };
@@ -32,8 +32,8 @@ fn parse_args() -> Result<(File, u32), Cow<'static, str>> {
         Ok(dose_mg) => dose_mg,
         Err(error) => {
             return Err(format!(
-                "can't parse argument <dose_mg>! ({})",
-                error
+                "can't parse argument <dose_mg>: `{}` ({})!",
+                dose_mg, error
             ).into());
         },
     };
