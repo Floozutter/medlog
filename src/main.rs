@@ -41,7 +41,8 @@ fn main() {
             std::process::exit(1);
         },
     };
-    let record = format!("{} | {} mg", chrono::Local::now(), dose_mg);
+    use chrono::SubsecRound;
+    let record = format!("{} | {} mg", chrono::Local::now().round_subsecs(0), dose_mg);
     println!("appending `{}` to file...", record);
     use std::io::Write;
     if let Err(error) = writeln!(log_file, "{}", record) {
