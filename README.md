@@ -1,12 +1,12 @@
 # medlog
 a minimal logging tool for medication doses!
 
-# build
+## build
 ```
 cargo build
 ```
 
-# usage
+## usage
 ```
 medlog
 medlog estradiol.log 2
