@@ -3,7 +3,7 @@ a minimal logging tool for medication doses!
 
 ## build
 ```
-cargo build
+cargo build --release
 ```
 
 ## usage
