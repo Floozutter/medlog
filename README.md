@@ -9,5 +9,5 @@ cargo build --release
 ## usage
 ```
 medlog
-medlog estradiol.log 2
+medlog estradiol-mg.log 2
 ```
