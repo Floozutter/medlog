@@ -1,6 +1,6 @@
 const USAGE: &str = "\
-usage: medlog <log_file> <dose_mg>
-example: medlog estradiol.log 2
+usage: medlog <log_file> <dose>
+example: medlog estradiol-mg.log 2
 ";
 
 fn parse_args() -> Result<(std::fs::File, u32), std::borrow::Cow<'static, str>> {
@@ -19,22 +19,22 @@ fn parse_args() -> Result<(std::fs::File, u32), std::borrow::Cow<'static, str>> 
             log_file, error
         ).into()),
     };
-    let dose_mg = match args.next() {
-        Some(dose_mg) => dose_mg,
-        None => return Err("missing argument <dose_mg>!".into()),
+    let dose = match args.next() {
+        Some(dose) => dose,
+        None => return Err("missing argument <dose>!".into()),
     };
-    let dose_mg = match dose_mg.parse::<u32>() {
-        Ok(dose_mg) => dose_mg,
+    let dose = match dose.parse::<u32>() {
+        Ok(dose) => dose,
         Err(error) => return Err(format!(
-            "can't parse argument <dose_mg>: `{}` ({})!",
-            dose_mg, error
+            "can't parse argument <dose>: `{}` ({})!",
+            dose, error
         ).into()),
     };
-    Ok((log_file, dose_mg))
+    Ok((log_file, dose))
 }
 
 fn main() {
-    let (mut log_file, dose_mg) = match parse_args() {
+    let (mut log_file, dose) = match parse_args() {
         Ok(args) => args,
         Err(error) => {
             println!("{}", USAGE);
@@ -43,7 +43,7 @@ fn main() {
         },
     };
     use chrono::SubsecRound;
-    let record = format!("{} | {} mg", chrono::Local::now().round_subsecs(0), dose_mg);
+    let record = format!("{} | {}", chrono::Local::now().round_subsecs(0), dose);
     print!("appending `{}` to file...", record);
     use std::io::Write;
     if let Err(error) = writeln!(log_file, "{}", record) {
