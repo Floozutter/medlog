@@ -43,7 +43,7 @@ fn main() {
         },
     };
     use chrono::SubsecRound;
-    let record = format!("{} | {}", chrono::Local::now().round_subsecs(0), dose);
+    let record = format!("{} | {}", chrono::Local::now().round_subsecs(0).to_rfc3339(), dose);
     print!("appending `{}` to file...", record);
     use std::io::Write;
     if let Err(error) = writeln!(log_file, "{}", record) {
