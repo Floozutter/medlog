@@ -1,9 +1,9 @@
 const USAGE: &str = "\
 usage: medlog <log_file> <dose>
-example: medlog estradiol-mg.log 2
+example: medlog estradiol-mg.log 2.5
 ";
 
-fn parse_args() -> Result<(std::fs::File, u32), std::borrow::Cow<'static, str>> {
+fn parse_args() -> Result<(std::fs::File, f64), std::borrow::Cow<'static, str>> {
     let mut args = std::env::args();
     if args.next().is_none() {
         return Err("missing arguments!".into());
@@ -23,7 +23,7 @@ fn parse_args() -> Result<(std::fs::File, u32), std::borrow::Cow<'static, str>> 
         Some(dose) => dose,
         None => return Err("missing argument <dose>!".into()),
     };
-    let dose = match dose.parse::<u32>() {
+    let dose = match dose.parse::<f64>() {
         Ok(dose) => dose,
         Err(error) => return Err(format!(
             "can't parse argument <dose>: `{}` ({})!",
